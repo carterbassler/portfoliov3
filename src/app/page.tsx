@@ -19,29 +19,6 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 
-export const Highlight = ({
-  children,
-  className,
-  link,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  link: string;
-}) => {
-  return (
-    <a target="_blank" href={link}>
-      <span
-        className={cn(
-          "font-bold  bg-blue-700/[0.2] text-blue-500 px-1 py-0.5",
-          className
-        )}
-      >
-        {children}
-      </span>
-    </a>
-  );
-};
-
 class ExperienceProps {
   company: String;
   position: String;
@@ -195,41 +172,21 @@ export default function Home() {
               <div id="about" className="flex flex-col space-y-8 p-3">
                 <p>
                   I am a fourth-year Computer Science student at the{" "}
-                  <Highlight link={"https://www.cavalierdaily.com/"}>
                     University of Virginia
-                  </Highlight>
                   . I love creating and developing things that I am passionate
                   about like my workout tracker app{" "}
-                  <Highlight
-                    link={
-                      "https://apps.apple.com/us/app/imperiumfit/id6449546227?platform=iphone"
-                    }
-                  >
                     Imperium
-                  </Highlight>
                 </p>
                 <p>
                   I've always been a lover of racket sports but have been
                   getting really into{" "}
-                  <Highlight
-                    link={
-                      "https://www.theonion.com/things-to-never-say-to-someone-who-loves-pickleball-1850540860"
-                    }
-                  >
                     Pickleball
-                  </Highlight>{" "}
                   and Squash recently
                 </p>
                 <p>
                   I'm really passionate about music and listen to almost
                   everything there is. Check out my{" "}
-                  <Highlight
-                    link={
-                      "https://open.spotify.com/user/bassler.spotify?si=bf92c113ca744a9a"
-                    }
-                  >
                     Spotify Profile
-                  </Highlight>{" "}
                   for some of my favorite playlists!
                 </p>
               </div>
