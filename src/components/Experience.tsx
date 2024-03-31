@@ -60,7 +60,7 @@ function Experience({ experience }: Props) {
           </div>
           <div className="flex flex-wrap justify-start mt-3">
             {experience.skills.map((skill) => (
-              <SkillIcon key={skill} name={skill} />
+              <SkillIcon key={String(skill)} name={skill} />
             ))}
           </div>
         </div>
