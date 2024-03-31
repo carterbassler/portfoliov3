@@ -1,113 +1,279 @@
+"use client";
+
+import Experience from "@/components/Experience";
+import Hero from "@/components/Hero";
+import Project from "@/components/Project";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
+import { useEffect, useRef } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+
+export const Highlight = ({
+  children,
+  className,
+  link,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  link: string;
+}) => {
+  return (
+    <a target="_blank" href={link}>
+      <span
+        className={cn(
+          "font-bold  bg-blue-700/[0.2] text-blue-500 px-1 py-0.5",
+          className
+        )}
+      >
+        {children}
+      </span>
+    </a>
+  );
+};
+
+class ExperienceProps {
+  company: String;
+  position: String;
+  url: string;
+  duration: String;
+  description: String;
+  skills: String[];
+
+  constructor(
+    company: String,
+    position: String,
+    url: string,
+    duration: String,
+    description: String,
+    skills: String[]
+  ) {
+    this.company = company;
+    this.position = position;
+    this.url = url;
+    this.duration = duration;
+    this.description = description;
+    this.skills = skills;
+  }
+}
+
+const experience1 = new ExperienceProps(
+  "CrowdVolt",
+  "Founding Software Engineer",
+  "https://crowdvolt.com",
+  "Jan 2024 - Present",
+  "Spearheaded the transition to Next.js, leveraged modern technologies, and efficiently migrated the existing React.js codebase, contributing to enhanced performance, maintainability, and user experience of the platform.",
+  ["React", "Next.js", "TailwindCSS", "HTML", "Typescript"]
+);
+
+const experience2 = new ExperienceProps(
+  "Bank of New York Mellon",
+  "Software Engineer Intern",
+  "https://www.bnymellon.com/",
+  "Jun - Aug 2023",
+  "As part of the wealth management engineering team, I developed an internal web tool to provide ease of access and improve application performance for team members. Utilized Angular and microfrontend architecture, along with Spring for efficient REST API development.",
+  ["Angular", "Java", "Spring Boot", "HTML/CSS", "Typescript"]
+);
+
+const experience3 = new ExperienceProps(
+  "Fermat Capital Management",
+  "Software Engineer Intern",
+  "https://www.fcm.com/",
+  "Jun - Aug 2022",
+  "Independently developed an internal tool that significantly reduced manual processing time and boosted workflow efficiency for the team. The tool was integrated into the engineering platform using .NET Core and utilized a machine learning model with a 92% accuracy rate to efficiently automate previously manual filtration processes.",
+  [".NET Core", "C#", "LINQ", "REGEX", "C# ML"]
+);
+
+const experience4 = new ExperienceProps(
+  "Fermat Capital Management",
+  "Software Engineer Intern",
+  "https://www.fcm.com/",
+  "Jun - Aug 2021",
+  "Developed an internal tool to help visualize over 40,000 data points of insurance loss. Created as an Angular web app, the tool utilized the Google Maps API to enhance data visualization and lookup, providing a seamless user experience through faster data retrieval and processing.",
+  ["Angular", "Google Maps API", "Javascript", "HTML/CSS"]
+);
+
+class ProjectProps {
+  name: String;
+  description: String;
+  url: string;
+  image: string;
+  skills: String[];
+
+  constructor(
+    name: String,
+    description: String,
+    url: string,
+    image: string,
+    skills: String[]
+  ) {
+    this.name = name;
+    this.description = description;
+    this.url = url;
+    this.image = image;
+    this.skills = skills;
+  }
+}
+
+const project1 = new ProjectProps(
+  "Vibify - Spotify Helper",
+  "A Next JS web application that uses NextAuth and the Spotify API to allow users to log in and automate the process of saving their 'Discover Weekly' playlist. Also allows users to view their Spotify Wrapped.",
+  "https://vibify.vercel.app",
+  "/vibify.png",
+  ["Next.js", "Spotify API", "NextAuth", "React", "TailwindCSS"]
+);
+
+const project2 = new ProjectProps(
+  "Imperium",
+  "A full-stack Flutter/Dart mobile application with workout tracking exercise addition, and set management features. Incorporated Firebase Firestore for real-time data handling and Firebase Authentication for secure user access control.",
+  "https://apps.apple.com/us/app/imperiumfit/id6449546227?platform=iphone",
+  "/",
+  ["Flutter", "Dart"]
+);
+const project3 = new ProjectProps(
+  "Loo's List Clone",
+  "A full-stack Django web application to display real-time University of Virginia class listings, integrated with Google user accounts for secure authentication, and utilized PostgreSQL for efficient data storage and access.",
+  "/",
+  "",
+  ["Django", "Python", "PostgreSQL", "HTML", "CSS", "Javascript"]
+);
+const project4 = new ProjectProps(
+  "EdgeVantage",
+  "A full-stack NextJs web app processes and aggregates odds from 5 sportsbooks using advanced data analysis to identify arbitrage opportunities and bets with positive Expected Value (EV), enhancing decision-making.",
+  "",
+  "/",
+  ["Next.js", "Typescript", "TailwindCSS", "Python", "FastAPI"]
+);
 
 export default function Home() {
+  const targetRef = useRef<HTMLDivElement | null>(null);
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    offset: ["end end", "end start"],
+  });
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8]);
+  const position = useTransform(scrollYProgress, (pos) =>
+    pos >= 1 ? "relative" : "fixed"
+  );
+
+  useEffect(() => {
+    const updateMousePosition = (ev: MouseEvent) => {
+      if (!targetRef.current) return;
+      const { clientX, clientY } = ev;
+      targetRef.current.style.setProperty("--x", `${clientX}px`);
+      targetRef.current.style.setProperty("--y", `${clientY}px`);
+    };
+
+    window.addEventListener("mousemove", updateMousePosition);
+
+    return () => {
+      window.removeEventListener("mousemove", updateMousePosition);
+    };
+  }, []);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <motion.section
+      style={{ opacity }}
+      ref={targetRef}
+      className="relative text-white before:pointer-events-none before:fixed before:inset-0 before:z-0 before:bg-[radial-gradient(circle_farthest-side_at_var(--x,_100px)_var(--y,_100px),_rgba(0,70,140,0.2)_0%,_rgba(0,70,140,0.1)_50%,_transparent_100%)] before:opacity-100"
+    >
+      <div className="flex justify-center">
+        <div className="flex flex-col xl:flex-row w-4/5">
+          <Hero />
+          <div className="flex flex-col space-y-24 w-3/5 overflow-y-auto py-24">
+            <section id="about">
+              <div id="about" className="flex flex-col space-y-8 p-3">
+                <p>
+                  I am a fourth-year Computer Science student at the{" "}
+                  <Highlight link={"https://www.cavalierdaily.com/"}>
+                    University of Virginia
+                  </Highlight>
+                  . I love creating and developing things that I am passionate
+                  about like my workout tracker app{" "}
+                  <Highlight
+                    link={
+                      "https://apps.apple.com/us/app/imperiumfit/id6449546227?platform=iphone"
+                    }
+                  >
+                    Imperium
+                  </Highlight>
+                </p>
+                <p>
+                  I've always been a lover of racket sports but have been
+                  getting really into{" "}
+                  <Highlight
+                    link={
+                      "https://www.theonion.com/things-to-never-say-to-someone-who-loves-pickleball-1850540860"
+                    }
+                  >
+                    Pickleball
+                  </Highlight>{" "}
+                  and Squash recently
+                </p>
+                <p>
+                  I'm really passionate about music and listen to almost
+                  everything there is. Check out my{" "}
+                  <Highlight
+                    link={
+                      "https://open.spotify.com/user/bassler.spotify?si=bf92c113ca744a9a"
+                    }
+                  >
+                    Spotify Profile
+                  </Highlight>{" "}
+                  for some of my favorite playlists!
+                </p>
+              </div>
+            </section>
+
+            <section id="experience">
+              <div className="flex flex-col space-y-12">
+                <Experience experience={experience1} />
+                <Experience experience={experience2} />
+                <Experience experience={experience3} />
+                <Experience experience={experience4} />
+              </div>
+            </section>
+            <section id="projects">
+              <div className="flex flex-col space-y-12">
+                <Project project={project1} />
+                <Project project={project2} />
+                <Project project={project3} />
+                <Project project={project4} />
+              </div>
+            </section>
+          </div>
         </div>
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      <header className="absolute bottom-0 right-0 p-4">
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline">Time Travel</Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>
+                Visit Previous Iterations of My Portfolio
+              </DialogTitle>
+            </DialogHeader>
+            <div className="grid grid-cols-2 gap-2">
+              <h1>Image</h1>
+              <h1>Image</h1>
+              <h1>Image</h1>
+              <h1>Image</h1>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </header>
+    </motion.section>
   );
 }
