@@ -5,15 +5,20 @@ import { Button } from "./ui/button";
 import { AnimatePresence, motion } from "framer-motion";
 import PlayingAnimation from "./PlayingAnimation";
 
+interface NowPlayingData {
+  title: string;
+  // Add other properties as needed
+}
+
 function Hero() {
-  const [nowPlaying, setNowPlaying] = useState(null);
+  const [nowPlaying, setNowPlaying] = useState<NowPlayingData | null>(null);
 
   useEffect(() => {
     const fetchNowPlaying = async () => {
       try {
         const response = await fetch("/api/spotify-now-playing");
         if (response.ok) {
-          const data = await response.json();
+          const data: NowPlayingData = await response.json();
           setNowPlaying(data);
         } else {
           setNowPlaying(null);
