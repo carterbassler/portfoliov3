@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -20,6 +20,7 @@ import {
 import { Label } from "@/components/ui/label";
 import About from "@/components/About";
 import Footer from "@/components/Footer";
+import { Barbell, SpotifyLogo, Strategy } from "@phosphor-icons/react";
 
 class ExperienceProps {
   company: String;
@@ -51,7 +52,7 @@ const experience1 = new ExperienceProps(
   "Founding Software Engineer",
   "https://crowdvolt.com",
   "Jan 2024 - Present",
-  "Spearheaded the transition to Next.js, leveraged modern technologies, and efficiently migrated the existing React.js codebase, contributing to enhanced performance, maintainability, and user experience of the platform.",
+  "Building out the frontend at YCombinator backed peer-to-peer, bid-ask style marketplace that allows fans to exchange tickets to live events.",
   [
     "React",
     "Next.js",
@@ -96,28 +97,32 @@ class ProjectProps {
   url: string;
   image: string;
   skills: String[];
+  icon: ReactElement;
 
   constructor(
     name: String,
     description: String,
     url: string,
     image: string,
-    skills: String[]
+    skills: String[],
+    icon: ReactElement
   ) {
     this.name = name;
     this.description = description;
     this.url = url;
     this.image = image;
     this.skills = skills;
+    this.icon = icon;
   }
 }
 
 const project1 = new ProjectProps(
   "Vibify - Spotify Helper",
   "A Next JS web application that uses NextAuth and the Spotify API to allow users to log in and automate the process of saving their 'Discover Weekly' playlist. Also allows users to view their Spotify Wrapped.",
-  "https://vibify.vercel.app",
+  "https://music-helper-app.vercel.app/",
   "/vibify.png",
-  ["Next.js", "Spotify API", "NextAuth", "React", "TailwindCSS"]
+  ["Next.js", "Spotify API", "NextAuth", "React", "TailwindCSS"],
+  <SpotifyLogo size={48} weight="fill" />
 );
 
 const project2 = new ProjectProps(
@@ -125,17 +130,24 @@ const project2 = new ProjectProps(
   "A full-stack Flutter/Dart mobile application with workout tracking exercise addition, and set management features. Incorporated Firebase Firestore for real-time data handling and Firebase Authentication for secure user access control.",
   "https://apps.apple.com/us/app/imperiumfit/id6449546227?platform=iphone",
   "/imperium.png",
-  ["Flutter", "Dart", "Firebase"]
+  ["Flutter", "Dart", "Firebase"],
+  <Barbell size={48} weight="fill" />
 );
 const project3 = new ProjectProps(
   "EdgeVantage",
   "A full-stack NextJs web app processes and aggregates odds from 5 sportsbooks using advanced data analysis to identify arbitrage opportunities and bets with positive Expected Value (EV), enhancing decision-making.",
   "",
   "/edgevantage.png",
-  ["Next.js", "Typescript", "TailwindCSS", "Python", "FastAPI"]
+  ["Next.js", "Typescript", "TailwindCSS", "Python", "FastAPI"],
+  <Strategy size={48} weight="fill" />
 );
 
 export default function Home() {
+  const [activeSection, setActiveSection] = useState("");
+  const aboutRef = useRef(null);
+  const experienceRef = useRef(null);
+  const projectsRef = useRef(null);
+
   const targetRef = useRef<HTMLDivElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,
@@ -161,6 +173,39 @@ export default function Home() {
       window.removeEventListener("mousemove", updateMousePosition);
     };
   }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      {
+        root: null, // viewport
+        rootMargin: "0px",
+        threshold: 0.5, // Adjust based on your needs
+      }
+    );
+
+    const sections = [
+      aboutRef.current,
+      experienceRef.current,
+      projectsRef.current,
+    ];
+    sections.forEach((section) => {
+      if (section) observer.observe(section);
+    });
+
+    return () => {
+      sections.forEach((section) => {
+        if (section) observer.unobserve(section);
+      });
+    };
+  }, []);
+
   return (
     <motion.section
       style={{ opacity }}
@@ -169,13 +214,13 @@ export default function Home() {
     >
       <div className="flex justify-center">
         <div className="flex flex-col lg:flex-row px-6 md:px-12 lg:px-0 lg:w-4/5">
-          <Hero />
+          <Hero activeSection={activeSection} />
           <div className="flex flex-col space-y-20 lg:w-3/5 overflow-y-auto pb-12 lg:py-24">
-            <section id="about">
+            <section ref={aboutRef} id="about">
               <About />
             </section>
 
-            <section id="experience">
+            <section ref={experienceRef} id="experience">
               <div className="flex flex-col space-y-6 lg:space-y-12">
                 <Experience experience={experience1} />
                 <Experience experience={experience2} />
@@ -183,7 +228,7 @@ export default function Home() {
                 <Experience experience={experience4} />
               </div>
             </section>
-            <section id="projects">
+            <section ref={projectsRef} id="projects">
               <div className="flex flex-col space-y-6 lg:space-y-12">
                 <Project project={project1} />
                 <Project project={project2} />

@@ -1,16 +1,20 @@
-import { cn } from "@/lib/utils";
-import { Github, Linkedin, Mail, File } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { Button } from "./ui/button";
 import { AnimatePresence, motion } from "framer-motion";
 import PlayingAnimation from "./PlayingAnimation";
+import { Button } from "./ui/button";
+import { Github, Linkedin, Mail, File } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface NowPlayingData {
   title: string;
-  // Add other properties as needed
+  // You can add other properties as needed
 }
 
-function Hero() {
+interface HeroProps {
+  activeSection: string;
+}
+
+const Hero: React.FC<HeroProps> = ({ activeSection }) => {
   const [nowPlaying, setNowPlaying] = useState<NowPlayingData | null>(null);
 
   useEffect(() => {
@@ -25,20 +29,23 @@ function Hero() {
         }
       } catch (error) {
         console.error("Error fetching now playing:", error);
+        setNowPlaying(null);
       }
     };
 
     // Fetch now playing data initially
     fetchNowPlaying();
 
-    // Set up polling to fetch now playing data every 5 seconds
-    const interval = setInterval(fetchNowPlaying, 1);
+    // Set up polling to fetch now playing data every 5 seconds (5000 milliseconds)
+    const interval = setInterval(fetchNowPlaying, 5000);
 
     // Clean up the interval when the component unmounts
-    return () => {
-      clearInterval(interval);
-    };
+    return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    console.log("Current active section:", activeSection);
+  }, [activeSection]);
 
   return (
     <div>
@@ -50,8 +57,8 @@ function Hero() {
           <h1 className="text-3xl md:text-5xl font-bold">Carter Bassler</h1>
           <h1 className="text-xl">Founding Engineer at CrowdVolt</h1>
           <h1 className="text-base md:text-lg text-white text-opacity-70 w-3/4">
-            I love building well-designed, user friendly products on the web and
-            mobile
+            I love building well-designed, user-friendly products on the web and
+            mobile.
           </h1>
           <div className="flex flex-row items-center space-x-2">
             <div className="w-3 h-3 bg-[#64FFDA] rounded-full animate-pulse"></div>
@@ -78,27 +85,53 @@ function Hero() {
           </div>
         </div>
         <div className="hidden lg:flex flex-col space-y-2">
+          {/* Adjust the activeSection check for each id */}
           <div className="flex flex-row items-center space-x-2">
-            <div className="border-t border-white my-4 px-8 border-[1px]"></div>
-            <h1 id="about" className="text-md text-white font-bold">
+            <div
+              className={`border-t ${
+                activeSection === "about" ? "border-2 w-12" : "border w-6"
+              } my-4 border-white`}
+            ></div>
+            <h1
+              id="about"
+              className={`${activeSection === "about" ? "font-bold" : ""}`}
+            >
               ABOUT
             </h1>
           </div>
           <div className="flex flex-row items-center space-x-2">
-            <div className="border-t border-white border-opacity-80 my-4 px-4 border-[1px]"></div>
-            <h1 id="experience" className="text-md text-white text-opacity-80">
+            <div
+              className={`border-t ${
+                activeSection === "experience" ? "border-2 w-12" : "border w-6"
+              } my-4 border-white`}
+            ></div>
+            <h1
+              id="experience"
+              className={`${activeSection === "experience" ? "font-bold" : ""}`}
+            >
               EXPERIENCE
             </h1>
           </div>
           <div className="flex flex-row items-center space-x-2">
-            <div className="border-t border-white border-opacity-80 my-4 px-4 border-[1px]"></div>
-            <h1 id="projects" className="text-md text-white text-opacity-80">
+            <div
+              className={`border-t ${
+                activeSection === "projects" ? "border-2 w-12" : "border w-6"
+              } my-4 border-white`}
+            ></div>
+            <h1
+              id="projects"
+              className={`${activeSection === "projects" ? "font-bold" : ""}`}
+            >
               PROJECTS
             </h1>
           </div>
         </div>
         <div className="flex flex-row space-x-6">
-          <a href="https://github.com/carterbassler" target="_blank">
+          <a
+            href="https://github.com/carterbassler"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Button
               variant="ghost"
               className="hover:text-[#64FFDA] hover:bg-transparent hover:-translate-y-2 transition duration-500 ease-in-out transform"
@@ -109,6 +142,7 @@ function Hero() {
           <a
             href="https://www.linkedin.com/in/carter-bassler-856a581a1/"
             target="_blank"
+            rel="noopener noreferrer"
           >
             <Button
               variant="ghost"
@@ -117,7 +151,11 @@ function Hero() {
               <Linkedin className="h-6 w-6 md:h-8 md:w-8" />
             </Button>
           </a>
-          <a href="/BasslerResume.pdf" target="_blank">
+          <a
+            href="/BasslerResume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Button
               variant="ghost"
               className="hover:text-[#64FFDA] hover:bg-transparent hover:-translate-y-2 transition duration-500 ease-in-out transform"
@@ -129,6 +167,6 @@ function Hero() {
       </div>
     </div>
   );
-}
+};
 
 export default Hero;
