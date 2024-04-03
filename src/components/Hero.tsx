@@ -42,18 +42,21 @@ function Hero() {
 
   return (
     <div>
-      <div id="header" className="flex flex-col space-y-8 xl:space-y-24 sticky items-center xl:items-start top-0 py-24">
-        <div className="flex flex-col items-center xl:items-start text-center xl:text-start space-y-4">
-          <h1 className="text-5xl font-bold">Carter Bassler</h1>
+      <div
+        id="header"
+        className="flex flex-col space-y-8 lg:space-y-24 sticky items-center lg:items-start top-0 py-12 lg:py-24"
+      >
+        <div className="flex flex-col items-center lg:items-start text-center lg:text-start space-y-4">
+          <h1 className="text-3xl md:text-5xl font-bold">Carter Bassler</h1>
           <h1 className="text-xl">Founding Engineer at CrowdVolt</h1>
-          <h1 className="text-lg text-white text-opacity-70 w-3/4">
+          <h1 className="text-base md:text-lg text-white text-opacity-70 w-3/4">
             I love building well-designed, user friendly products on the web and
             mobile
           </h1>
           <div className="flex flex-row items-center space-x-2">
             <div className="w-3 h-3 bg-[#64FFDA] rounded-full animate-pulse"></div>
             {nowPlaying && nowPlaying.title ? (
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 text-sm md:text-base">
                 <span>Now Playing:</span>
                 <AnimatePresence mode="wait">
                   <motion.span
@@ -74,7 +77,7 @@ function Hero() {
             )}
           </div>
         </div>
-        <div className="hidden xl:flex flex-col space-y-2">
+        <div className="hidden lg:flex flex-col space-y-2">
           <div className="flex flex-row items-center space-x-2">
             <div className="border-t border-white my-4 px-8 border-[1px]"></div>
             <h1 id="about" className="text-md text-white font-bold">
@@ -96,21 +99,30 @@ function Hero() {
         </div>
         <div className="flex flex-row space-x-6">
           <a href="https://github.com/carterbassler" target="_blank">
-            <Button variant="ghost" className="hover:text-[#64FFDA] hover:bg-transparent hover:-translate-y-2 transition duration-500 ease-in-out transform">
-              <Github className="h-8 w-8" />
+            <Button
+              variant="ghost"
+              className="hover:text-[#64FFDA] hover:bg-transparent hover:-translate-y-2 transition duration-500 ease-in-out transform"
+            >
+              <Github className="h-6 w-6 md:h-8 md:w-8" />
             </Button>
           </a>
           <a
             href="https://www.linkedin.com/in/carter-bassler-856a581a1/"
             target="_blank"
           >
-            <Button variant="ghost" className="hover:text-[#64FFDA] hover:bg-transparent hover:-translate-y-2 transition duration-500 ease-in-out transform">
-              <Linkedin className="h-8 w-8" />
+            <Button
+              variant="ghost"
+              className="hover:text-[#64FFDA] hover:bg-transparent hover:-translate-y-2 transition duration-500 ease-in-out transform"
+            >
+              <Linkedin className="h-6 w-6 md:h-8 md:w-8" />
             </Button>
           </a>
           <a href="/BasslerResume.pdf" target="_blank">
-            <Button variant="ghost" className="hover:text-[#64FFDA] hover:bg-transparent hover:-translate-y-2 transition duration-500 ease-in-out transform">
-              <File className="h-8 w-8" />
+            <Button
+              variant="ghost"
+              className="hover:text-[#64FFDA] hover:bg-transparent hover:-translate-y-2 transition duration-500 ease-in-out transform"
+            >
+              <File className="h-6 w-6 md:h-8 md:w-8" />
             </Button>
           </a>
         </div>

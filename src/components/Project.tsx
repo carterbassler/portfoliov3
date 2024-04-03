@@ -2,6 +2,7 @@ import { ArrowUpRight } from "lucide-react";
 import React from "react";
 import SkillIcon from "./SkillIcon";
 import Image from "next/image";
+import { Barbell, SpotifyLogo } from "@phosphor-icons/react";
 
 class ProjectProps {
   name: String;
@@ -31,27 +32,24 @@ type Props = {
 
 function Project({ project }: Props) {
   return (
-    <div className="flex flex-row space-x-4 group justify-center w-full hover:bg-[#0a1930] hover:bg-opacity-50 transition duration-500 ease-in-out rounded-lg p-3">
-      <div className="flex relative rounded-full w-1/4 aspect-w-9 aspect-h-9">
-        <Image
-          src={project.image}
-          alt="Project Image"
-          layout="fill"
-          objectFit="contain"
-          className=""
-        />
+    <div className="flex flex-col md:flex-row md:space-x-4 space-y-2 md:space-y-0 group justify-center w-full hover:bg-[#0a1930] hover:bg-opacity-50 transition duration-500 ease-in-out rounded-lg p-3">
+      <div className="flex items-center md:justify-center md:w-1/4 aspect-w-16 aspect-h-9">
+        <div className="flex items-center justify-center rounded-xl p-4 h-16 w-16 md:h-24 md:w-24 bg-teal-800 text-teal-300">
+          {/* <Barbell size={48} color="#f0f0f0" weight="fill" /> */}
+          <SpotifyLogo size={48} weight="fill" />
+        </div>
       </div>
-      <div className="w-3/4 flex-col space-y-2">
+      <div className="md:w-3/4 flex-col space-y-2">
         <div className="flex flex-col">
           <a target="_blank" href={project.url} rel="noopener noreferrer">
             <div className="flex flex-row space-x-2">
-              <h1 className="font-bold text-xl group-hover:text-[#64FFDA] text-white transition duration-500 ease-in-out">
+              <h1 className="font-bold text-lg md:text-xl group-hover:text-[#64FFDA] text-white transition duration-500 ease-in-out">
                 {project.name}
               </h1>
               <ArrowUpRight className="text-white group-hover:text-[#64FFDA] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition duration-500 ease-in-out transform" />
             </div>
           </a>
-          <h1>{project.description}</h1>
+          <h1 className="text-white text-sm md:text-base text-opacity-80">{project.description}</h1>
         </div>
         <div className="flex flex-wrap justify-start mt-3">
           {project.skills.map((skill) => (
