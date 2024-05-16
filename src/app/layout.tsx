@@ -8,6 +8,7 @@ const fontSans = FontSans({
 });
 
 import { cn } from "@/lib/utils"
+import Head from "next/head";
 
 export default function RootLayout({
   children,
@@ -16,6 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Head>
+        <title>My page title</title>
+      </Head>
       <body className={cn(
           "min-h-screen bg-background font-sans antialiased",
           fontSans.variable
