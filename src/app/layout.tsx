@@ -17,9 +17,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
-        <title>My page title</title>
-      </Head>
       <body className={cn(
           "min-h-screen bg-background font-sans antialiased",
           fontSans.variable

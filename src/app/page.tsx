@@ -21,6 +21,7 @@ import { Label } from "@/components/ui/label";
 import About from "@/components/About";
 import Footer from "@/components/Footer";
 import { Barbell, SpotifyLogo, Strategy } from "@phosphor-icons/react";
+import Head from "next/head";
 
 class ExperienceProps {
   company: String;
@@ -212,6 +213,9 @@ export default function Home() {
       ref={targetRef}
       className="relative text-white before:pointer-events-none before:fixed before:inset-0 before:z-0 before:bg-[radial-gradient(circle_farthest-side_at_var(--x,_100px)_var(--y,_100px),_rgba(0,70,140,0.2)_0%,_rgba(0,70,140,0.1)_50%,_transparent_100%)] before:opacity-100"
     >
+      <Head>
+        <title>Carter's Portfolio</title>
+      </Head>
       <div className="flex justify-center">
         <div className="flex flex-col lg:flex-row px-6 md:px-12 lg:px-0 lg:w-4/5">
           <Hero activeSection={activeSection} />
